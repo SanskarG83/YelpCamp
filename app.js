@@ -3,6 +3,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const Campground = require('./models/campground');
 const methodOverride = require('method-override');
+const campground = require('./models/campground');
 
 mongoose.connect('mongodb://127.0.0.1:27017/yelpcamp');
 const db = mongoose.connection;
@@ -69,7 +70,22 @@ app.put('/campgrounds/:id', async (req, res) => {
     res.redirect(`/campgrounds/${updatedCampground.id}?update=success`);
 });
 
-
+// app.delete('/campgrounds/:id', async (req, res) => {
+//     const {id} = req.params;
+//     await Campground.findByIdAndDelete(id);
+//     res.redirect('/campgrounds');
+// });
+app.delete('/campgrounds/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await Campground.findByIdAndDelete(id);
+        res.sendStatus(200);
+    } 
+    catch (err) {
+        console.error('Error deleting campground:', err);
+        res.sendStatus(500);
+    }
+});
 
 app.listen(3000, () => {
     console.log("Listening on port 3000....");
