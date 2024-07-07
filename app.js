@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const ejsMate = require('ejs-mate');
 const Campground = require('./models/campground');
 const methodOverride = require('method-override');
 const campground = require('./models/campground');
@@ -14,11 +15,13 @@ db.once("open", () => {
 
 const app = express();
 
+app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
     res.render('home');
@@ -41,8 +44,8 @@ app.get('/campgrounds', async (req, res) => {
 })
 
 app.post('/campgrounds', async (req, res) => {
-    const {title, location, description, price} = req.body;
-    const newCampground = new Campground({title, location, description, price});
+    const {title, location, img, description, price} = req.body;
+    const newCampground = new Campground({title, location, img, description, price});
     await newCampground.save();
     res.redirect('/campgrounds');
 })
@@ -65,8 +68,8 @@ app.get('/campgrounds/:id', async (req, res) => {
 
 app.put('/campgrounds/:id', async (req, res) => {
     const { id } = req.params;
-    const { title, location, description, price } = req.body;
-    const updatedCampground = await Campground.findByIdAndUpdate(id, { title, location, description, price }, { new: true });
+    const { title, location, img, description, price } = req.body;
+    const updatedCampground = await Campground.findByIdAndUpdate(id, { title, location, img, description, price }, { new: true });
     res.redirect(`/campgrounds/${updatedCampground.id}?update=success`);
 });
 

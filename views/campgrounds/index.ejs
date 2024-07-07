@@ -1,96 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campgrounds</title>
-    <style>
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            border-radius: 20px;
-            width: 30%;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <div>
-        <h1>List of all Campgrounds:</h1>
-        <ul>
-            <% for(let campground of campgrounds) { %>
-                <li><a href="/campgrounds/<%= campground._id %>"><%= campground.title %></a></li>
-            <% } %>
-        </ul>
-        <button id="addCampgroundBtn">Click to add new Campground</button>
+<% layout('layouts/boilerplate') %>
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        border-radius: 20px;
+        width: 30%;
+    }
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
+<div>
+    <h1>List of all Campgrounds:</h1>
+    <ul>
+        <% for(let campground of campgrounds) { %>
+            <li><a href="/campgrounds/<%= campground._id %>"><%= campground.title %></a></li>
+        <% } %>
+    </ul>
+    <button id="addCampgroundBtn">Click to add new Campground</button>
 
-        <!-- The Modal -->
-        <div id="addCampgroundModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Add New Campground</h2>
-                <form action="/campgrounds" method="POST">
-                    <label for="title">Title:</label>
-                    <input type="text" id="title" name="title" required><br><br>
-                    <label for="location">Location:</label>
-                    <input type="text" id="location" name="location" required><br><br>
-                    <label for="description">Description:</label>
-                    <textarea id="description" name="description" required></textarea><br><br>
-                    <label for="price">Price:</label>
-                    <input type="text" id="price" name="price" required><br><br>
-                    <button type="submit">Add Campground</button>
-                </form>
-            </div>
+    <!-- The Modal -->
+    <div id="addCampgroundModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add New Campground</h2>
+            <form action="/campgrounds" method="POST">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required><br><br>
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location" required><br><br>
+                <label for="img">Image:</label>
+                <input type="text" id="img" name="img" required><br><br>
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" required></textarea><br><br>
+                <label for="price">Price:</label>
+                <input type="Number" id="price" name="price" required><br><br>
+                <button type="submit">Add Campground</button>
+            </form>
         </div>
     </div>
-    
-    <script>
+</div>
+<script>
+    var modal = document.getElementById("addCampgroundModal");
 
-        var modal = document.getElementById("addCampgroundModal");
+    var btn = document.getElementById("addCampgroundBtn");
 
-        var btn = document.getElementById("addCampgroundBtn");
+    var span = document.getElementsByClassName("close")[0];
 
-        var span = document.getElementsByClassName("close")[0];
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
 
-        btn.onclick = function() {
-            modal.style.display = "block";
-        }
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
 
-        span.onclick = function() {
+    window.onclick = function(event) {
+        if (event.target == modal) {
             modal.style.display = "none";
         }
+    }
 
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-
-    
-    </script>
-</body>
-</html>
+</script>
